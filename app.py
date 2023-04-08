@@ -16,8 +16,8 @@ ws.append(['Temperature', 'Voltage1', 'Voltage2', 'Voltage3', 'Voltage4', 'Curre
 
 # Constants
 ser = serial.Serial('COM3', 9600, timeout=1)
-voltage_est = 18
-current_est = 3
+#voltage_est = 18
+#current_est = 3
 
 
 @app.route("/")
@@ -55,8 +55,8 @@ def get_data():
         voltage = 0
         oc_voltage=0
         current = 0
-        vmpp = 16
-        vcof = -0.0038
+        vmpp = 16 #constant
+        vcof = -0.0038 #constant
         
         if line != '':
             splitted = line.split(',')
@@ -77,10 +77,10 @@ def get_data():
         
         current = current
         # get irridiance value from the api.
-        current_est = (119/1000)*1.36
+        current_est = (119/1000)*1.36 #formula to find estimated current
         voltage = voltage
-        voltage_est = vmpp*(1+(vcof*(temperature-25)))
-        oc_est = 21*(1+(vcof*(temperature-25)))
+        voltage_est = vmpp*(1+(vcof*(temperature-25))) #formula to find estimated voltage
+        oc_est = 21*(1+(vcof*(temperature-25))) #estimated open ckt voltage
         oc = oc_voltage
         ir, vr, ocr = ratio.calculate_ratios(current, current_est,voltage, voltage_est, oc, oc_est)
         print("ir:", ir)
